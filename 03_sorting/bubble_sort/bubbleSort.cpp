@@ -17,6 +17,7 @@ void swap(int *a, int *b)
 
 void bubbleSort(int *arr, int size)
 {
+    int swapCount = 0;
     bool isSwapped;
 
     for (int i = 0; i < size - 1; i++)
@@ -28,6 +29,7 @@ void bubbleSort(int *arr, int size)
             {
                 swap(&arr[j], &arr[j + 1]);
                 isSwapped = true;
+                swapCount++;
             }
         }
         if (!isSwapped)
@@ -35,6 +37,7 @@ void bubbleSort(int *arr, int size)
             break;
         }
     }
+    cout << "\nTotal swap count: " << swapCount << endl;
 }
 
 int main()
