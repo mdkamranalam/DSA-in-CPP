@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 using namespace std;
 
 class Node
@@ -229,6 +230,64 @@ bool searchKey(Node *head, int key)
     return searchKey(head->next, key);
 }
 
+// Reverse list (Iterative approach)
+// Node *reverseList(Node *head)
+// {
+//     Node *curr = head, *prev = nullptr, *next;
+
+//     while(curr != nullptr)
+//     {
+//         next = curr->next;
+//         curr->next = prev;
+
+//         prev = curr;
+//         curr = next;
+//     }
+
+//     return prev;
+// }
+
+// Reverse list (Recursive approach)
+// Node *reverseList(Node *head)
+// {
+//     if (head == NULL || head->next == NULL)
+//     {
+//         return head;
+//     }
+
+//     Node *rest = reverseList(head->next);
+
+//     head->next->next = head;
+//     head->next = NULL;
+//     return rest;
+// }
+
+// Reverse list (Stack approach)
+Node *reverseList(Node *head)
+{
+    stack<Node *> s;
+    Node *temp = head;
+
+    while (temp->next != NULL)
+    {
+        s.push(temp);
+        temp = temp->next;
+    }
+    
+    head = temp;
+
+    while (!s.empty())
+    {
+        temp->next = s.top();
+        s.pop();
+        temp = temp->next;
+    }
+
+    temp->next = NULL;
+
+    return head;
+}
+
 int main()
 {
     cout << "---------- SINGLE LINKEDLIST ----------" << endl;
@@ -254,15 +313,17 @@ int main()
     printList(head);
 
     // Delete at beginning
-    head = deleteAtBeginning(head);
+    // head = deleteAtBeginning(head);
 
     // Delete at end
-    head = deleteAtEnd(head);
+    // head = deleteAtEnd(head);
 
     // Delete at position
-    pos = 2;
-    head = deleteAtPosition(head, pos);
+    // pos = 2;
+    // head = deleteAtPosition(head, pos);
 
+    // Reverse list
+    head = reverseList(head);
     printList(head);
 
     // Search
