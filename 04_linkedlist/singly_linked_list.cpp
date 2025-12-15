@@ -16,6 +16,40 @@ public:
     }
 };
 
+// Function to traverse and print the linked list (iterative approach)
+// void traverseList(Node *head)
+// {
+//     while (head != nullptr)
+//     {
+//         cout << head->data;
+//         if (head->next != nullptr)
+//         {
+//             cout << " -> ";
+//         }
+//         head = head->next;
+//     }
+//     cout << endl;
+// }
+
+// Function to traverse and print the linked list (recursive approach)
+void traverseList(Node *head)
+{
+    if (head == nullptr)
+    {
+        cout << endl;
+        return;
+    }
+
+    cout << head->data;
+
+    if (head->next != nullptr)
+    {
+        cout << " -> ";
+    }
+
+    traverseList(head->next);
+}
+
 int main()
 {
     cout << "---------- SINGLE LINKEDLIST ----------" << endl;
@@ -24,12 +58,7 @@ int main()
     head->next->next = new Node(30);
     head->next->next->next = new Node(40);
 
-    while (head != nullptr)
-    {
-        cout << head->data << " ";
-        head = head->next;
-    }
-    cout << endl;
+    traverseList(head);
     cout << "---------------------------------------" << endl;
 
     return 0;
