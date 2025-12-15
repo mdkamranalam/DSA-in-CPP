@@ -196,6 +196,39 @@ Node *deleteAtPosition(Node *head, int pos)
     return head;
 }
 
+// Search an element in the linked list (Iterative approach)
+// bool searchKey(Node *head, int key)
+// {
+//     Node *curr = head;
+
+//     while (curr != NULL)
+//     {
+//         if (curr->data == key)
+//         {
+//             return true;
+//         }
+//         curr = curr->next;
+//     }
+
+//     return false;
+// }
+
+// Search an element in the linked list (Recursive approach)
+bool searchKey(Node *head, int key)
+{
+    if (head == nullptr)
+    {
+        return false;
+    }
+
+    if (head->data == key)
+    {
+        return true;
+    }
+
+    return searchKey(head->next, key);
+}
+
 int main()
 {
     cout << "---------- SINGLE LINKEDLIST ----------" << endl;
@@ -231,6 +264,15 @@ int main()
     head = deleteAtPosition(head, pos);
 
     printList(head);
+
+    // Search
+    int key = 10;
+    if (searchKey(head, key))
+        cout << "true";
+    else
+        cout << "false";
+    cout << endl;
+
     cout << "---------------------------------------" << endl;
 
     return 0;
