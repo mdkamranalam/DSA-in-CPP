@@ -130,6 +130,72 @@ Node *insertAtPosition(Node *head, int pos, int value)
     return head;
 }
 
+// Function to delete a node from the beginning
+Node *deleteAtBeginning(Node *head)
+{
+    if (head == nullptr)
+    {
+        return nullptr;
+    }
+
+    Node *temp = head;
+    head = head->next;
+
+    delete temp;
+
+    return head;
+}
+
+// Function to delete a node from the end
+Node *deleteAtEnd(Node *head)
+{
+    if (head == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (head->next == nullptr)
+    {
+        delete head;
+        return nullptr;
+    }
+
+    Node *secondLast = head;
+    while (secondLast->next->next != nullptr)
+    {
+        secondLast = secondLast->next;
+    }
+
+    secondLast->next = nullptr;
+
+    return head;
+}
+
+// Delete a node at the given position
+Node *deleteAtPosition(Node *head, int pos)
+{
+    Node *temp = head;
+
+    if (pos == 1)
+    {
+        head = temp->next;
+        delete temp;
+        return head;
+    }
+
+    Node *prev = nullptr;
+    for (int i = 1; i < pos; i++)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    prev->next = temp->next;
+    delete temp;
+
+    return head;
+}
+
 int main()
 {
     cout << "---------- SINGLE LINKEDLIST ----------" << endl;
@@ -152,6 +218,18 @@ int main()
     head = insertAtPosition(head, pos, value);
 
     // traverseList(head);
+    printList(head);
+
+    // Delete at beginning
+    head = deleteAtBeginning(head);
+
+    // Delete at end
+    head = deleteAtEnd(head);
+
+    // Delete at position
+    pos = 2;
+    head = deleteAtPosition(head, pos);
+
     printList(head);
     cout << "---------------------------------------" << endl;
 
