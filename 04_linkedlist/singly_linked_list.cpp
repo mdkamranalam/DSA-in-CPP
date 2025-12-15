@@ -273,7 +273,7 @@ Node *reverseList(Node *head)
         s.push(temp);
         temp = temp->next;
     }
-    
+
     head = temp;
 
     while (!s.empty())
