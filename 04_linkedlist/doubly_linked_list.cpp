@@ -125,7 +125,7 @@ Node *insertAtPosition(Node *head, int pos, int value)
 
         if (head)
             head->prev = newNode;
-        
+
         head = newNode;
         return head;
     }
@@ -148,7 +148,72 @@ Node *insertAtPosition(Node *head, int pos, int value)
 
     if (!newNode->next)
         newNode->next->prev = newNode;
-    
+
+    return head;
+}
+
+/* ---------- Deletion Operations ---------- */
+Node *deleteAtBeginning(Node *head)
+{
+    if (!head)
+        return nullptr;
+
+    Node *temp = head;
+    head = head->next;
+
+    if (head)
+        head->prev = nullptr;
+
+    delete temp;
+    return head;
+}
+
+Node *deleteAtEnd(Node *head)
+{
+    if (!head)
+        return NULL;
+    if (!head->next)
+    {
+        delete head;
+        return NULL;
+    }
+
+    Node *curr = head;
+    while (curr->next)
+    {
+        curr = curr->next;
+    }
+
+    curr->prev->next = NULL;
+    delete curr;
+
+    return head;
+}
+
+Node *deleteAtPosition(Node *head, int pos)
+{
+    if (!head)
+        return NULL;
+
+    Node *curr = head;
+    for (int i = 1; i < pos && curr; i++)
+    {
+        curr = curr->next;
+    }
+
+    if (!curr)
+        return head;
+
+    if (curr->prev)
+        curr->prev->next = curr->next;
+
+    if (curr->next)
+        curr->next->prev = curr->prev;
+
+    if (head == curr)
+        head = curr->next;
+
+    delete curr;
     return head;
 }
 
@@ -174,6 +239,15 @@ int main()
     value = 50;
     head = insertAtPosition(head, pos, value);
 
+    printList(head);
+
+    head = deleteAtPosition(head, pos);
+    printList(head);
+
+    head = deleteAtBeginning(head);
+    printList(head);
+
+    head = deleteAtEnd(head);
     printList(head);
 
     cout << "---------------------------------------" << endl;
