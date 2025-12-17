@@ -115,6 +115,43 @@ Node *insertAtEnd(Node *head, int value)
     return head;
 }
 
+Node *insertAtPosition(Node *head, int pos, int value)
+{
+    Node *newNode = new Node(value);
+
+    if (pos == 1)
+    {
+        newNode->next = head;
+
+        if (head)
+            head->prev = newNode;
+        
+        head = newNode;
+        return head;
+    }
+
+    Node *curr = head;
+    for (int i = 1; i < pos - 1 && curr; i++)
+    {
+        curr = curr->next;
+    }
+
+    if (!curr)
+    {
+        delete newNode;
+        return head;
+    }
+
+    newNode->prev = curr;
+    newNode->next = curr->next;
+    curr->next = newNode;
+
+    if (!newNode->next)
+        newNode->next->prev = newNode;
+    
+    return head;
+}
+
 /* ---------- Main Function ---------- */
 int main()
 {
@@ -132,6 +169,10 @@ int main()
 
     value = 10;
     head = insertAtEnd(head, value);
+
+    int pos = 3;
+    value = 50;
+    head = insertAtPosition(head, pos, value);
 
     printList(head);
 
