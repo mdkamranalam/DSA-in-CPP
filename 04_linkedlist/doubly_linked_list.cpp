@@ -26,6 +26,16 @@ void printList(Node *head)
     cout << endl;
 }
 
+void freeList(Node *&head)
+{
+    while (head)
+    {
+        Node *temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
 /* ---------- Traversal Operations ---------- */
 // Forward Traversal (Iterative Approach)
 // void forwardTraversal(Node *head)
@@ -98,56 +108,41 @@ Node *insertAtEnd(Node *head, int value)
     Node *newNode = new Node(value);
 
     if (!head)
-    {
-        head = newNode;
-    }
-    else
-    {
-        Node *curr = head;
-        while (curr->next)
-        {
-            curr = curr->next;
-        }
+        return newNode;
 
-        curr->next = newNode;
-        newNode->prev = curr;
-    }
+    Node *curr = head;
+    while (curr->next)
+        curr = curr->next;
+
+    curr->next = newNode;
+    newNode->prev = curr;
+
     return head;
 }
 
 Node *insertAtPosition(Node *head, int pos, int value)
 {
-    Node *newNode = new Node(value);
+    if (pos <= 0)
+        return head;
 
     if (pos == 1)
-    {
-        newNode->next = head;
-
-        if (head)
-            head->prev = newNode;
-
-        head = newNode;
-        return head;
-    }
+        return insertAtBeginning(head, value);
 
     Node *curr = head;
     for (int i = 1; i < pos - 1 && curr; i++)
-    {
         curr = curr->next;
-    }
 
     if (!curr)
-    {
-        delete newNode;
         return head;
-    }
 
-    newNode->prev = curr;
+    Node *newNode = new Node(value);
     newNode->next = curr->next;
-    curr->next = newNode;
+    newNode->prev = curr;
 
-    if (!newNode->next)
-        newNode->next->prev = newNode;
+    if (curr->next)
+        curr->next->prev = newNode;
+
+    curr->next = newNode;
 
     return head;
 }
@@ -171,11 +166,12 @@ Node *deleteAtBeginning(Node *head)
 Node *deleteAtEnd(Node *head)
 {
     if (!head)
-        return NULL;
+        return nullptr;
+
     if (!head->next)
     {
         delete head;
-        return NULL;
+        return nullptr;
     }
 
     Node *curr = head;
@@ -184,7 +180,7 @@ Node *deleteAtEnd(Node *head)
         curr = curr->next;
     }
 
-    curr->prev->next = NULL;
+    curr->prev->next = nullptr;
     delete curr;
 
     return head;
@@ -192,14 +188,15 @@ Node *deleteAtEnd(Node *head)
 
 Node *deleteAtPosition(Node *head, int pos)
 {
-    if (!head)
-        return NULL;
+    if (!head || pos <= 1)
+        return head;
+
+    if (pos == 1)
+        return deleteAtBeginning(head);
 
     Node *curr = head;
     for (int i = 1; i < pos && curr; i++)
-    {
         curr = curr->next;
-    }
 
     if (!curr)
         return head;
@@ -210,9 +207,6 @@ Node *deleteAtPosition(Node *head, int pos)
     if (curr->next)
         curr->next->prev = curr->prev;
 
-    if (head == curr)
-        head = curr->next;
-
     delete curr;
     return head;
 }
@@ -222,26 +216,19 @@ int main()
 {
     cout << "---------- DOUBLY LINKEDLIST ----------" << endl;
 
-    Node *head = new Node(2);
-    head->next = new Node(3);
-    head->next->prev = head;
-    head->next->next = new Node(4);
-    head->next->next->prev = head->next;
+    Node *head = nullptr;
 
-    // Insert a new node at the front of the list
-    int value = 1;
-    head = insertAtBeginning(head, value);
+    head = insertAtBeginning(head, 2);
+    head = insertAtEnd(head, 3);
+    head = insertAtEnd(head, 4);
 
-    value = 10;
-    head = insertAtEnd(head, value);
-
-    int pos = 3;
-    value = 50;
-    head = insertAtPosition(head, pos, value);
+    head = insertAtBeginning(head, 1);
+    head = insertAtEnd(head, 10);
+    head = insertAtPosition(head, 3, 50);
 
     printList(head);
 
-    head = deleteAtPosition(head, pos);
+    head = deleteAtPosition(head, 3);
     printList(head);
 
     head = deleteAtBeginning(head);
@@ -249,6 +236,8 @@ int main()
 
     head = deleteAtEnd(head);
     printList(head);
+
+    freeList(head);
 
     cout << "---------------------------------------" << endl;
 
